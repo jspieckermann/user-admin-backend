@@ -2,16 +2,18 @@ package org.spieckermann.useradminbackend.user;
 
 public class User {
 	
+	private String id;
 	private String name;
 	private String email;
 	private String firstname;
 	private String lastname;
-	private String password = "";
+	private String password;
 	
 	
 	public User() { }
 	
-	public User(String name, String email, String firstname, String lastname) {
+	public User(String id, String name, String email, String firstname, String lastname) {
+		setId(id);
 		setName(name);
 		setEmail(email);
 		setFirstname(firstname);
@@ -86,6 +88,20 @@ public class User {
 	 */
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 

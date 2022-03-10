@@ -21,6 +21,33 @@ public class UserService {
 		}
 		return result;
 	}
+	
+	public User getUser(String id) {
+		User result = null;
+		List<UserRepresentation> userRepList = KeycloakAdminConfig.getInstance().realm(KeycloakAdminConfig.realm).users().search(id, true);
+		for (UserRepresentation user : userRepList) {
+			result = convert(user);
+		}
+		return result;
+	}
+	
+	public void updateUser(String id, User user) {
+		CredentialRepresentation credentialRepresentation = createPasswordCredentials(user.getPassword());
+	    UserRepresentation myUser = new UserRepresentation();
+	    myUser.setUsername(user.getName());
+	    myUser.setFirstName(user.getFirstname());
+	    myUser.setLastName(user.getLastname());
+	    myUser.setEmail(user.getEmail());
+	    myUser.setCredentials(Collections.singletonList(credentialRepresentation));
+
+	    UsersResource usersResource = KeycloakAdminConfig.getInstance().realm(KeycloakAdminConfig.realm).users();
+	    usersResource.get(id).update(myUser);
+	}
+	
+	public void deleteUser(String id) {
+		UsersResource usersResource = KeycloakAdminConfig.getInstance().realm(KeycloakAdminConfig.realm).users();
+		usersResource.delete(id);
+	}
 
 	public void addUser(User user) {
 		UsersResource usersResource = KeycloakAdminConfig.getInstance().realm(KeycloakAdminConfig.realm).users();
@@ -53,7 +80,7 @@ public class UserService {
 	 * @return User
 	 */
 	private User convert(UserRepresentation userRep) {
-		return new User(userRep.getUsername(), userRep.getEmail(), userRep.getFirstName(), userRep.getLastName());
+		return new User(userRep.getId(), userRep.getUsername(), userRep.getEmail(), userRep.getFirstName(), userRep.getLastName());
 	}
 
 }
