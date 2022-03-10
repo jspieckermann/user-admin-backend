@@ -4,12 +4,18 @@ public class User {
 	
 	private String name;
 	private String email;
+	private String firstname;
+	private String lastname;
+	private String password = "";
+	
 	
 	public User() { }
 	
-	public User(String name, String email) {
+	public User(String name, String email, String firstname, String lastname) {
 		setName(name);
 		setEmail(email);
+		setFirstname(firstname);
+		setLastname(lastname);
 	}
 
 	/**
@@ -38,6 +44,48 @@ public class User {
 	 */
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	/**
+	 * @return the firstname
+	 */
+	public String getFirstname() {
+		return firstname;
+	}
+
+	/**
+	 * @param firstname the firstname to set
+	 */
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	/**
+	 * @return the lastname
+	 */
+	public String getLastname() {
+		return lastname;
+	}
+
+	/**
+	 * @param lastname the lastname to set
+	 */
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	/**
+	 * @return the password
+	 */
+	public String getPassword() {
+		return password;
+	}
+
+	/**
+	 * @param password the password to set
+	 */
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 
