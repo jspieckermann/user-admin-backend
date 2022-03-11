@@ -60,7 +60,7 @@ public class UserService {
 		kcUser.setLastName(user.getLastname());
 		kcUser.setEmail(user.getEmail());
 		kcUser.setEnabled(true);
-		kcUser.setEmailVerified(false);
+		kcUser.setEmailVerified(true);
 		usersResource.create(kcUser);
 
 	}
