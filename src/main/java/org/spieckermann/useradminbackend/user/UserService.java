@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
@@ -23,25 +24,22 @@ public class UserService {
 	}
 	
 	public User getUser(String id) {
-		User result = null;
-		List<UserRepresentation> userRepList = KeycloakAdminConfig.getInstance().realm(KeycloakAdminConfig.realm).users().search(id, true);
-		for (UserRepresentation user : userRepList) {
-			result = convert(user);
-		}
-		return result;
+		UserRepresentation userRep = KeycloakAdminConfig.getInstance().realm(KeycloakAdminConfig.realm).users().get(id).toRepresentation();
+		return convert(userRep);
 	}
 	
 	public void updateUser(String id, User user) {
-		CredentialRepresentation credentialRepresentation = createPasswordCredentials(user.getPassword());
-	    UserRepresentation myUser = new UserRepresentation();
-	    myUser.setUsername(user.getName());
-	    myUser.setFirstName(user.getFirstname());
-	    myUser.setLastName(user.getLastname());
-	    myUser.setEmail(user.getEmail());
-	    myUser.setCredentials(Collections.singletonList(credentialRepresentation));
-
-	    UsersResource usersResource = KeycloakAdminConfig.getInstance().realm(KeycloakAdminConfig.realm).users();
-	    usersResource.get(id).update(myUser);
+		UserResource userResource = KeycloakAdminConfig.getInstance().realm(KeycloakAdminConfig.realm).users().get(id);
+		UserRepresentation userRep = userResource.toRepresentation();
+		userRep.setUsername(user.getName());
+		userRep.setFirstName(user.getFirstname());
+		userRep.setLastName(user.getLastname());
+		userRep.setEmail(user.getEmail());
+		if (user.getPassword() != null && user.getPassword().length() > 0) {
+			CredentialRepresentation credentialRepresentation = createPasswordCredentials(user.getPassword());
+			userRep.setCredentials(Collections.singletonList(credentialRepresentation));
+		}
+	    userResource.update(userRep);
 	}
 	
 	public void deleteUser(String id) {
