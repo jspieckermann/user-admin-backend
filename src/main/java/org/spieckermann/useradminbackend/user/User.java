@@ -8,16 +8,18 @@ public class User {
 	private String firstname;
 	private String lastname;
 	private String password;
+	private boolean administrator;
 	
 	
 	public User() { }
 	
-	public User(String id, String name, String email, String firstname, String lastname) {
+	public User(String id, String name, String email, String firstname, String lastname, boolean administrator) {
 		setId(id);
 		setName(name);
 		setEmail(email);
 		setFirstname(firstname);
 		setLastname(lastname);
+		setAdministrator(administrator);
 	}
 
 	/**
@@ -102,6 +104,20 @@ public class User {
 	 */
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	/**
+	 * @return the administrator
+	 */
+	public boolean isAdministrator() {
+		return administrator;
+	}
+
+	/**
+	 * @param administrator the administrator to set
+	 */
+	public void setAdministrator(boolean administrator) {
+		this.administrator = administrator;
 	}
 	
 

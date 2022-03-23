@@ -50,5 +50,15 @@ public class UserController {
 	public void addUser(@RequestBody User user) {
 		service.addUser(user);
 	}
+	
+//	@GetMapping("/roles/{id}")
+//	public List<String> getRolesByUser(@PathVariable String id) {
+//		return service.getRoles(id);
+//	}
+//	
+//	@GetMapping("/roles")
+//	public List<String> getRoles() {
+//		return service.getRoles();
+//	}
 
 }

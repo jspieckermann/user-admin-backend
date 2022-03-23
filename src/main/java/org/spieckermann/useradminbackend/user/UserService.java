@@ -9,10 +9,14 @@ import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.spieckermann.useradminbackend.config.KeycloakAdminConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
+	
+	@Autowired
+	private RoleService roleService;
 
 	public List<User> getUser() {
 		List<User> result = new ArrayList<User>();
@@ -40,6 +44,7 @@ public class UserService {
 			userRep.setCredentials(Collections.singletonList(credentialRepresentation));
 		}
 	    userResource.update(userRep);
+	    roleService.updateRoles(id, user.isAdministrator());
 	}
 	
 	public void deleteUser(String id) {
@@ -60,9 +65,11 @@ public class UserService {
 		kcUser.setEnabled(true);
 		kcUser.setEmailVerified(true);
 		usersResource.create(kcUser);
+		
+		roleService.updateRolesByUsername(kcUser.getUsername(), user.isAdministrator());
 
 	}
-
+	
 	private CredentialRepresentation createPasswordCredentials(String password) {
 		CredentialRepresentation passwordCredentials = new CredentialRepresentation();
 		passwordCredentials.setTemporary(false);
@@ -78,7 +85,8 @@ public class UserService {
 	 * @return User
 	 */
 	private User convert(UserRepresentation userRep) {
-		return new User(userRep.getId(), userRep.getUsername(), userRep.getEmail(), userRep.getFirstName(), userRep.getLastName());
+		boolean admin = roleService.hasRole(userRep.getId(), RoleService.ROLE_ADMIN);
+		return new User(userRep.getId(), userRep.getUsername(), userRep.getEmail(), userRep.getFirstName(), userRep.getLastName(), admin);
 	}
 
 }
